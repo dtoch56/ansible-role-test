@@ -1,0 +1,12 @@
+---
+- name: Test host's connection and get facts
+  ansible.builtin.debug:
+    msg:
+      - "Node name: {{ ansible_facts.nodename }}"
+      - "IP address: {{ansible_default_ipv4.address }}"
+      - "System: {{ ansible_system }}"
+      - "OS family: {{ ansible_os_family }}"
+      - "Distribution: {{ ansible_distribution }} {{ ansible_distribution_version }}"
+      - "Architecture: {{ ansible_userspace_architecture }}"
+      - "User: {{ ansible_user_id }}"
+      - "UID/GID: {{ ansible_user_uid }}:{{ ansible_user_gid}} "
