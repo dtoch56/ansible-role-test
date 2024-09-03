@@ -42,9 +42,10 @@ jobs:
       matrix:
         distro:
           - centos8
-          - centos7
-          - ubuntu2004
-          - ubuntu2010
+          - ubuntu2404
+          - ubuntu2204
+          - debian12
+          - debian11
           - debian10
 
     steps:
