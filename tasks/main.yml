@@ -10,7 +10,7 @@
   ansible.builtin.debug:
     msg:
       - "Node name: {{ ansible_facts.nodename }}"
-      - "IP address: {{ ansible_default_ipv4.address }}"
+      - "IP address: {% if ansible_default_ipv4.address is defined %}{{ ansible_default_ipv4.address }}{% endif %}"
       - "System: {{ ansible_system }}"
       - "OS family: {{ ansible_os_family }}"
       - "Kernel: {{ ansible_kernel }}"
