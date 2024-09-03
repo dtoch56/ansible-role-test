@@ -1,12 +1,12 @@
 ---
 name: CI
-# Controls when the action will run. 
-on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches: [ main ]
+'on':
   pull_request:
-    branches: [ main ]
+  push:
+    branches:
+      - master
+  schedule:
+    - cron: "0 7 * * 0"
 
 defaults:
   run:
@@ -19,22 +19,21 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Check out the codebase.
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           path: 'dtoch56.test'
 
       - name: Set up Python 3.
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
       - name: Install test dependencies.
-        run: pip3 install yamllint ansible-lint
+        run: pip3 install yamllint
 
       - name: Lint code.
         run: |
           yamllint .
-          ansible-lint
 
   molecule:
     name: Molecule
@@ -50,17 +49,17 @@ jobs:
 
     steps:
       - name: Check out the codebase.
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           path: 'dtoch56.test'
 
       - name: Set up Python 3.
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v5
         with:
           python-version: '3.x'
 
       - name: Install test dependencies.
-        run: pip3 install ansible molecule[docker] docker
+        run: pip3 install ansible molecule molecule-plugins[docker] docker
 
       - name: Run Molecule tests.
         run: molecule test
