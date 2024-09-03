@@ -1,9 +1,7 @@
 ---
 - name: Check sse3 processor's flag availability
   ansible.builtin.shell:
-    cmd: |
-      set -o pipefail
-      grep 'flags' /proc/cpuinfo | head -1 | cut -d ':' -f 2
+    cmd: grep 'flags' /proc/cpuinfo | head -1 | cut -d ':' -f 2
   register: cpu_flags
   changed_when: false
   when: cpu_flags_to_check is defined and (cpu_flags_to_check|length>0)
