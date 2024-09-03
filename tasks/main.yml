@@ -1,12 +1,35 @@
 ---
+- name: Check sse3 processor's flag availability
+  ansible.builtin.shell:
+    cmd: |
+      set -o pipefail
+      grep 'flags' /proc/cpuinfo | head -1 | cut -d ':' -f 2
+  register: cpu_flags
+  changed_when: false
+  when: cpu_flags_to_check is defined and (cpu_flags_to_check|length>0)
+
 - name: Test host's connection and get facts
   ansible.builtin.debug:
     msg:
       - "Node name: {{ ansible_facts.nodename }}"
-      - "IP address: {{ansible_default_ipv4.address }}"
+      - "IP address: {{ ansible_default_ipv4.address }}"
       - "System: {{ ansible_system }}"
       - "OS family: {{ ansible_os_family }}"
+      - "Kernel: {{ ansible_kernel }}"
       - "Distribution: {{ ansible_distribution }} {{ ansible_distribution_version }}"
       - "Architecture: {{ ansible_userspace_architecture }}"
+      - "Memory: {{ (ansible_memtotal_mb / 1024) | round | int }} G"
+      - "CPU cores: {{ ansible_processor_cores }}"
+      - "CPU count: {{ ansible_processor_count }}"
+      - "CPU nproc {{ ansible_processor_nproc }}"
+      - "CPU threads_per_core {{ ansible_processor_threads_per_core }}"
+      - "CPU vcpus {{ ansible_processor_vcpus }}"
+      - "Processor: {{ ansible_processor[2] }}"
+      - 'Disks: {% for key, value in ansible_devices.items() %}{{ key }}: {{ value.size }} ({% if value.rotational == "1" %}hdd{% else %}ssd{% endif %}),{% endfor %}'
+      - "Service manager: {{ ansible_service_mgr }}"
+      - "Role: {{ ansible_virtualization_role }}"
+      - "Type: {{ ansible_virtualization_type }}"
       - "User: {{ ansible_user_id }}"
-      - "UID/GID: {{ ansible_user_uid }}:{{ ansible_user_gid}} "
+      - "UID/GID: {{ ansible_user_uid }}:{{ ansible_user_gid }} "
+      - "Python: {{ ansible_python_version }}"
+      - '{% for flag in cpu_flags_to_check %}CPU flag {{ flag }}: {% if flag in cpu_flags.stdout %}yes{% else %}no{% endif %}{% endfor %}'

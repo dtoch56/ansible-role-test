@@ -1,2 +1,4 @@
 ---
 # vars file for ansible-role-test
+
+cpu_flags_to_check: []

@@ -5,10 +5,12 @@ name = "pypi"
 
 [packages]
 ansible = "*"
+ansible-lint = "*"
 molecule = "*"
 molecule-docker = "*"
+yamllint = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.9"
+python_version = "3.12"

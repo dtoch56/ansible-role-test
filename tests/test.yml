@@ -1,4 +1,5 @@
 ---
-- hosts: localhost
+- name: Test
+  hosts: localhost
   roles:
     - dtoch56.test
